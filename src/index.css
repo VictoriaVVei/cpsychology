@@ -507,7 +507,7 @@ main {
 }
 
 .pc img {
-  height: 120%;
+  width: 30%;
   position: absolute;
   bottom: 40px;
   right: 40px;
