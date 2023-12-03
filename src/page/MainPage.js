@@ -330,7 +330,7 @@ export function MainPage() {
             <div className='reservation' id="p2">
                 <h1 style={{ marginBottom: "0" }}>心理空间</h1>
                 <div style={{ fontSize: "small", color: "#6B7580" }}>需要解决问题并前来寻求帮助者称为来访者或者咨客，提供帮助的咨询专家称为咨询者。真实案例展示希望可以从中得到帮助。</div>
-                <div style={{ fontSize: "small", color: "#6B7580" }}>两篇优惠10%，三篇优惠20%。</div>
+                <div style={{ fontSize: "small", color: "#6B7580" }}>两篇优惠10%，三篇优惠30%。</div>
                 <div style={{ fontSize: "small", color: "#6B7580" }}>购买三篇文章后可以联系手机号“513 981 9216”或邮箱号“jingyichen448@gmail.com”预约30分钟免费心理沟通一次。</div>
                 <div className='news_container'>
                     <div>
