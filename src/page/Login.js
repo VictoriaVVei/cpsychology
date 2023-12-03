@@ -1,42 +1,20 @@
 import React, { useState } from 'react'; //import React Component
+import { NavLink } from 'react-router-dom';
+import { auth } from '../firebase.js';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+
 export function Login() {
-    const [name, setname] = useState("")
-    const [phone, setphone] = useState("")
-    const [otp, setotp] = useState("")
+    let timeout = null;
+    const [email, setemail] = useState("")
     const [password, setpassword] = useState("")
-    const [password2, setpassword2] = useState("")
 
     const handleInputChange = (e) => {
         const { id, value } = e.target;
-        if (id === "name") {
-            setname(value);
-            if (value.trim().length > 0) {
-                document.getElementsByTagName("label")[0].style.color = "#868686"
-            }
-        }
-        if (id === "phone") {
-            setphone(value);
-            if (value.trim().length >= 10) {
-                document.getElementsByTagName("label")[5].style.color = "#868686"
-            }
-        }
-        if (id === "otp") {
-            setotp(value);
-            if (value.trim().length >= 6) {
-                document.getElementsByTagName("label")[6].style.color = "#868686"
-            }
+        if (id === "email") {
+            setemail(value);
         }
         if (id === "password") {
             setpassword(value);
-            if (value.trim().length >= 6) {
-                document.getElementsByTagName("label")[1].style.color = "#868686"
-            }
-        }
-        if (id === "password2") {
-            setpassword2(value);
-            if (value.trim().length >= 6) {
-                document.getElementsByTagName("label")[2].style.color = "#868686"
-            }
         }
     }
 
@@ -55,6 +33,20 @@ export function Login() {
         topFunction()
     }
 
+    const login = () => {
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                localStorage.setItem("user", email)
+                showSnackbar("登录成功，2s后返回主页", timeout)
+                setTimeout(() => {
+                    window.location.href = "/main"
+                }, 2000);
+            })
+            .catch((error) => {
+                showSnackbar("请提供正确的邮箱和密码", timeout)
+            });
+    }
+
     return (
         <div id="Login">
             <div className='back' onClick={goBack}>&lt; back</div>
@@ -62,20 +54,14 @@ export function Login() {
                 <div className="login">
                     <h1 className="login_title" style={{ marginTop: "0" }}>欢迎回来</h1>
                     <p>请使用你的账户登录</p>
-                    <form style={{ marginTop: "50px" }}>
-                        <label htmlFor="phone">手机号: </label>
-                        <br />
-                        <div className='for_phone'>
-                            <input
-                                type="tel"
-                                id="phone"
-                                onChange={(e) => handleInputChange(e)}
-                                value={phone}
-                            />
-                            <span className="material-symbols-outlined">
-                                发送验证
-                            </span>
-                        </div>
+                    <form style={{ marginTop: "40px" }}>
+                        <label htmlFor="email">邮箱号: </label>
+                        <input
+                            type="tel"
+                            id="email"
+                            onChange={(e) => handleInputChange(e)}
+                            value={email}
+                        />
                         <div className='for_password'>
                             <label htmlFor="password">输入密码: </label>
                             <input
@@ -84,17 +70,31 @@ export function Login() {
                                 name="password"
                                 onChange={(e) => handleInputChange(e)}
                                 value={password}
+                                maxLength="100"
                             />
                             <span onClick={togglePasswordVisibility} className="material-symbols-outlined">
                                 {showPassword ? 'visibility' : 'visibility_off'}
                             </span>
                         </div>
                     </form>
-                    <div className="submit">登录</div>
-                    <div className="submit2">注册</div>
+                    <div className="submit" onClick={login}>登录</div>
+                    <NavLink to={"/signup"}><div className="submit2">注册</div></NavLink>
                     <div id="snackbar"></div>
                 </div>
             </div>
         </div>
     );
+}
+
+function showSnackbar(message, timeout) {
+    let tips = document.getElementById("snackbar");
+    tips.innerHTML = message;
+    if (timeout) {
+        clearTimeout(timeout);
+    }
+    tips.style.display = "block";
+    tips.className = "show";
+    timeout = setTimeout(() => {
+        tips.className = tips.className.replace("show", "disappear");
+    }, 2000);
 }

@@ -37,15 +37,15 @@ export function Navigation({ onLanguageChange }) {
             {language === "English" ?
                 <>
                     <div className="menu">
-                        <a href="#p1"><div>Home</div></a>
-                        <a href="#p2"><div>Psychological space</div></a>
-                        <a href="#p3"><div>Personal case</div></a>
+                        <a href="/main#p1"><div>Home</div></a>
+                        <a href="/main#p2"><div>Psychological space</div></a>
+                        <a href="/main#p3"><div>Personal case</div></a>
                     </div>
                 </> :
                 <div className="menu">
-                    <a href="#p1"><div>首页</div></a>
-                    <a href="#p2"><div>心理空间</div></a>
-                    <a href="#p3"><div>个人案例</div></a>
+                    <a href="/main#p1"><div>首页</div></a>
+                    <a href="/main#p2"><div>心理空间</div></a>
+                    <a href="/main#p3"><div>个人案例</div></a>
                 </div>
             }
 

@@ -1,8 +1,11 @@
-import React, { useState } from 'react'; //import React Component
+import React, { useEffect, useState } from 'react'; //import React Component
+import { auth } from '../firebase.js';
+import { createUserWithEmailAndPassword, updateProfile, sendSignInLinkToEmail, isSignInWithEmailLink } from 'firebase/auth';
+
 export function Signup() {
+    let timeout = null;
     const [name, setname] = useState("")
-    const [phone, setphone] = useState("")
-    const [otp, setotp] = useState("")
+    const [email, setemail] = useState(localStorage.getItem("emailForSignIn") ? localStorage.getItem("emailForSignIn") : "")
     const [password, setpassword] = useState("")
     const [password2, setpassword2] = useState("")
 
@@ -10,33 +13,15 @@ export function Signup() {
         const { id, value } = e.target;
         if (id === "name") {
             setname(value);
-            if (value.trim().length > 0) {
-                document.getElementsByTagName("label")[0].style.color = "#868686"
-            }
         }
-        if (id === "phone") {
-            setphone(value);
-            if (value.trim().length >= 10) {
-                document.getElementsByTagName("label")[5].style.color = "#868686"
-            }
-        }
-        if (id === "otp") {
-            setotp(value);
-            if (value.trim().length >= 6) {
-                document.getElementsByTagName("label")[6].style.color = "#868686"
-            }
+        if (id === "email") {
+            setemail(value);
         }
         if (id === "password") {
             setpassword(value);
-            if (value.trim().length >= 6) {
-                document.getElementsByTagName("label")[1].style.color = "#868686"
-            }
         }
         if (id === "password2") {
             setpassword2(value);
-            if (value.trim().length >= 6) {
-                document.getElementsByTagName("label")[2].style.color = "#868686"
-            }
         }
     }
 
@@ -55,87 +40,192 @@ export function Signup() {
         topFunction()
     }
 
+    const actionCodeSettings = {
+        url: 'http://localhost:3000/signup', //需要更改
+        handleCodeInApp: true,
+    };
+
+    useEffect(() => {
+        if (isSignInWithEmailLink(auth, window.location.href)) {
+            let button = document.querySelector(".for_phone span")
+            button.style.display = "none"
+        }
+    })
+
+    const [click, setclick] = useState(false)
+    const requestOTP = async (e) => {
+        sendSignInLinkToEmail(auth, email, actionCodeSettings)
+            .then(() => {
+                window.localStorage.setItem('emailForSignIn', email);
+                showSnackbar("验证已发送", timeout)
+                setclick(true)
+            })
+            .catch((error) => {
+                console.error(error);
+                showSnackbar("请确认邮箱是否正确", timeout)
+            });
+    };
+
+    let loader = document.querySelector(".loader")
+    const makeAuth = () => {
+        loader.style.display = "block"
+        if (!validateEmail(email)) {
+            showSnackbar("请提供正确的邮箱", timeout)
+            loader.style.display = "none"
+        } else if (password.length < 6) {
+            showSnackbar("请提供至少6位密码", timeout)
+            loader.style.display = "none"
+        } else if (password !== password2) {
+            showSnackbar("两次密码不一样", timeout)
+            loader.style.display = "none"
+        } else if (name.trim().length === 0) {
+            showSnackbar("名字不能为空", timeout)
+            loader.style.display = "none"
+        } else {
+            if (isSignInWithEmailLink(auth, window.location.href)) {
+                document.getElementById("email").value = "";
+                document.getElementById("password").value = "";
+                document.getElementById("password2").value = "";
+                document.getElementById("name").value = "";
+                document.getElementById("age").value = "";
+                document.getElementById("gender").value = "";
+                let email = localStorage.getItem('emailForSignIn');
+                if (!email) {
+                    showSnackbar("请提供邮箱", timeout)
+                    loader.style.display = "none"
+                    return
+                }
+
+                createUserWithEmailAndPassword(auth, email, password)
+                    .then(() => {
+                        updateProfile(auth.currentUser, {
+                            displayName: name,
+                            password: password
+                        })
+                            .then(() => {
+                                showSnackbar("账户创建成功, 2s后返回登录", timeout)
+                                loader.style.display = "none"
+                                setTimeout(() => {
+                                    window.location.href = "/login"
+                                }, 2000);
+                            })
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                        showSnackbar("用户创建失败", timeout)
+                        loader.style.display = "none"
+                    });
+            } else {
+                showSnackbar("邮箱验证失败", timeout)
+                loader.style.display = "none"
+            }
+        }
+    }
+
     return (
         <div id="Login">
             <div className='back' onClick={goBack}>&lt; back</div>
-            <div style={{ padding: "150px 0" }}>
-                <div className="login">
-                    <h1 className="login_title" style={{ marginTop: "0" }}>账户注册</h1>
-                    <p>请使用手机号注册</p>
-                    <form style={{ marginTop: "50px" }}>
-                        <label htmlFor="phone">手机号(仅限美国，不用填写地域号): </label>
-                        <br />
-                        <div className='for_phone'>
+            <div style={{ padding: "100px 0" }}>
+                {click ?
+                    <>
+                        <div className="loader2"></div>
+                        <div style={{ textAlign: "center" }}>请在邮箱操作</div>
+                    </> :
+                    <div className="login">
+                        <h1 className="login_title" style={{ marginTop: "0" }}>账户注册</h1>
+                        <p>请使用邮箱号注册</p>
+                        <form style={{ marginTop: "40px" }}>
+                            <label htmlFor="email">邮箱号: </label>
+                            <div className='for_phone'>
+                                <input
+                                    type="tel"
+                                    id="email"
+                                    onChange={(e) => handleInputChange(e)}
+                                    value={email}
+                                    maxLength="50"
+                                />
+                                <span className="material-symbols-outlined" onClick={requestOTP}>
+                                    发送验证
+                                </span>
+                            </div>
+
+                            <div className='for_password'>
+                                <label htmlFor="password">输入密码: </label>
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    id="password"
+                                    name="password"
+                                    onChange={(e) => handleInputChange(e)}
+                                    value={password}
+                                    maxLength="100"
+                                />
+                                <span onClick={togglePasswordVisibility} className="material-symbols-outlined">
+                                    {showPassword ? 'visibility' : 'visibility_off'}
+                                </span>
+                            </div>
+
+                            <div className='for_password'>
+                                <label htmlFor="Password2">确认密码: </label>
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    id="password2"
+                                    onChange={(e) => handleInputChange(e)}
+                                    value={password2}
+                                    maxLength="100"
+                                />
+                                <span onClick={togglePasswordVisibility} className="material-symbols-outlined">
+                                    {showPassword ? 'visibility' : 'visibility_off'}
+                                </span>
+                            </div>
+
+                            <label htmlFor="name">用户姓名: </label>
                             <input
-                                type="tel"
-                                id="phone"
+                                type="text"
+                                id="name"
                                 onChange={(e) => handleInputChange(e)}
-                                value={phone}
+                                value={name}
+                                maxLength="20"
                             />
-                            <span className="material-symbols-outlined">
-                                发送验证
-                            </span>
-                        </div>
-                        <label htmlFor="name">验证码: </label>
-                        <input
-                            type="number"
-                            id="otp"
-                            onChange={(e) => handleInputChange(e)}
-                            value={otp}
-                        />
-                        <br />
-                        <div className='for_password'>
-                            <label htmlFor="password">输入密码: </label>
+
+                            <label htmlFor="name">年龄: </label>
                             <input
-                                type={showPassword ? "text" : "password"}
-                                id="password"
-                                name="password"
-                                onChange={(e) => handleInputChange(e)}
-                                value={password}
+                                type="number"
+                                id="age"
+                                maxLength="10"
                             />
-                            <span onClick={togglePasswordVisibility} className="material-symbols-outlined">
-                                {showPassword ? 'visibility' : 'visibility_off'}
-                            </span>
-                        </div>
-                        <div className='for_password'>
-                            <label htmlFor="Password2">确认密码: </label>
+
+                            <label htmlFor="name">性别: </label>
                             <input
-                                type={showPassword ? "text" : "password"}
-                                id="password2"
-                                onChange={(e) => handleInputChange(e)}
-                                value={password2}
+                                type="text"
+                                id="gender"
+                                maxLength="10"
                             />
-                            <span onClick={togglePasswordVisibility} className="material-symbols-outlined">
-                                {showPassword ? 'visibility' : 'visibility_off'}
-                            </span>
-                        </div>
-                        <label htmlFor="name">用户姓名: </label>
-                        <br />
-                        <input
-                            type="text"
-                            id="name"
-                            onChange={(e) => handleInputChange(e)}
-                            value={name}
-                        />
-                        <br />
-                        <label htmlFor="name">年龄: </label>
-                        <br />
-                        <input
-                            type="text"
-                            id="name"
-                        />
-                        <br />
-                        <label htmlFor="name">性别: </label>
-                        <br />
-                        <input
-                            type="text"
-                            id="name"
-                        />
-                    </form>
-                    <div className="submit">提交</div>
-                    <div id="snackbar"></div>
-                </div>
+                        </form>
+                        <div className="submit" onClick={makeAuth}>提交</div>
+                        <div className="loader"></div>
+                        <div id="snackbar"></div>
+                    </div>
+                }
             </div>
         </div>
     );
 }
+
+
+function showSnackbar(message, timeout) {
+    let tips = document.getElementById("snackbar");
+    tips.innerHTML = message;
+    if (timeout) {
+        clearTimeout(timeout);
+    }
+    tips.style.display = "block";
+    tips.className = "show";
+    timeout = setTimeout(() => {
+        tips.className = tips.className.replace("show", "disappear");
+    }, 2000);
+}
+
+function validateEmail(email) {
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
+};

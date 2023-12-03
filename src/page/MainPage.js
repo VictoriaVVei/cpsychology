@@ -4,45 +4,7 @@ import { Navigation } from '../components/Navigation.js';
 import { Navigation2 } from '../components/Navigation2.js';
 
 export function MainPage() {
-
-    useEffect(() => {
-        const updatePosition = () => {
-            let img = document.querySelector(".slides img");
-            let timeTag = document.querySelector(".timeTag");
-
-            if (img && timeTag) {
-                timeTag.style.top = `${img.clientHeight + 45}px`;
-            }
-        };
-
-        window.addEventListener('resize', updatePosition);
-        updatePosition();
-
-        return () => {
-            window.removeEventListener('resize', updatePosition);
-        };
-    });
-
-    useEffect(() => {
-        const updatePosition = () => {
-            let img = document.querySelector(".slides img");
-            let timeTag = document.querySelector(".timeTag");
-
-            if (img && timeTag) {
-                timeTag.style.top = `${img.clientHeight + 45}px`;
-            }
-        };
-
-        const img = document.querySelector(".slides img");
-        if (img) {
-            if (img.complete) {
-                updatePosition();
-            } else {
-                img.onload = updatePosition;
-            }
-        }
-    }, []);
-
+    let timeout = null;
     const button_sRef = useRef();
     const showB = () => {
         button_sRef.current.style.display = "block"
@@ -251,32 +213,56 @@ export function MainPage() {
         </div>
     }
 
-    let timeout = null;
     const [cartItem, setCartItem] = useState([])
-    const add = (e) => {
+    const add = async (e) => {
         let value = e.target.dataset.value
-        setCartItem([...new Set([...cartItem, value])])
-        e.target.style.color = "rgb(161, 135, 113)"
 
-        let tips = document.getElementById("snackbar");
-        tips.innerHTML = '';
-        let text = "";
-        if (timeout) {
-            clearTimeout(timeout);
+        let choice1 = value.split("/ ")[0]
+        let choice2 = value.split("/ ")[0].toLowerCase()
+        try {
+            const response = await fetch('/checkBuy1', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ content: choice1 }),
+            });
+
+            if (!response.ok) {
+                return
+            }
+
+            const res = await response.json()
+            console.log(choice1 + " " + res)
+            if (res === true) {
+                window.location.href = `/${choice2.replace(".", "_")}`
+            } else {
+                setCartItem([...new Set([...cartItem, value])])
+                e.target.style.color = "rgb(161, 135, 113)"
+
+                let tips = document.getElementById("snackbar");
+                tips.innerHTML = '';
+                let text = "";
+                if (timeout) {
+                    clearTimeout(timeout);
+                }
+                tips.style.display = "block"
+
+                if (language === "English") {
+                    text = document.createTextNode("Add to cart");
+                } else {
+                    text = document.createTextNode("成功添加到购物车");
+                }
+
+                tips.appendChild(text)
+                tips.className = "show";
+                timeout = setTimeout(() => {
+                    tips.className = tips.className.replace("show", "disappear");
+                }, 2000);
+            }
+        } catch (error) {
+            showSnackbar(language === "Chinese" ? "购买信息错误" : "Wrong Information", timeout)
         }
-        tips.style.display = "block"
-
-        if (language === "English") {
-            text = document.createTextNode("Add to cart");
-        } else {
-            text = document.createTextNode("成功添加到购物车");
-        }
-
-        tips.appendChild(text)
-        tips.className = "show";
-        timeout = setTimeout(() => {
-            tips.className = tips.className.replace("show", "disappear");
-        }, 2000);
     }
 
     const remove = (e) => {
@@ -305,7 +291,7 @@ export function MainPage() {
                     <div>
                         <img src="./img/p7.png" />
                         <div style={{ textAlign: "left" }}>
-                            <NavLink><h3 style={{ marginTop: "5%", color: "rgb(161, 135, 113)" }}>Q1 Can the psychological process of sublimation reduce the problems of unemployment and low wages? (Free) </h3></NavLink>
+                            <NavLink to={"/q1_1"}><h3 style={{ marginTop: "5%", color: "rgb(161, 135, 113)" }}>Q1 Can the psychological process of sublimation reduce the problems of unemployment and low wages? (Free) </h3></NavLink>
                             <div style={{ color: "rgb(161, 135, 113)" }}>Have you ever encountered a boss who treated you unfairly in the workplace? You feel like you are not being recognized for your abilities compared to others.</div>
                             <h3 data-value="Q1.2/ 3$" onClick={(e) => add(e)}>Q2 How can operant conditioning help gain recognition from work leaders and colleagues? (3$)</h3>
                             <div>Do you want to have a very harmonious relationship with your boss and colleagues? The "operant conditioning" in psychology can effectively demonstrate the harmonious side of relationships in the workplace. Many individuals with high emotional intelligence use this method.</div>
@@ -314,7 +300,7 @@ export function MainPage() {
                     <div>
                         <div style={{ textAlign: "right" }}>
                             <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "5%", color: "black" }}>
-                                <NavLink><h3 style={{ color: "rgb(161, 135, 113)" }}>Q1 How can we use reinforcement in psychology to help children get rid of procrastination? (Free) </h3></NavLink>
+                                <NavLink to={"/q1_2"}><h3 style={{ color: "rgb(161, 135, 113)" }}>Q1 How can we use reinforcement in psychology to help children get rid of procrastination? (Free) </h3></NavLink>
                             </div>
                             <div style={{ color: "rgb(161, 135, 113)" }}>If a child is too engrossed in watching TV and refuses to do homework, take a bath, or go to bed on time, how do we use reinforcement to address procrastination behavior</div>
                             <div style={{ display: "flex", justifyContent: "flex-end", color: "black" }}>
@@ -344,11 +330,12 @@ export function MainPage() {
             <div className='reservation' id="p2">
                 <h1 style={{ marginBottom: "0" }}>心理空间</h1>
                 <div style={{ fontSize: "small", color: "#6B7580" }}>需要解决问题并前来寻求帮助者称为来访者或者咨客，提供帮助的咨询专家称为咨询者。真实案例展示希望可以从中得到帮助。</div>
+                <div style={{ fontSize: "small", color: "#6B7580" }}>购买三篇文章后可以联系手机号“513 981 9216”或邮箱号“jingyichen448@gmail.com”预约30分钟免费心理沟通一次。</div>
                 <div className='news_container'>
                     <div>
                         <img src="./img/p4.png" />
                         <div style={{ textAlign: "left" }}>
-                            <NavLink><h3 style={{ marginTop: "5%", color: "rgb(161, 135, 113)" }}>Q1 心理学上的"升华"可以减少人们的失业率以及工资低的问 (免费)</h3></NavLink>
+                            <NavLink to={"/q1_1"}><h3 style={{ marginTop: "5%", color: "rgb(161, 135, 113)" }}>Q1 心理学上的"升华"可以减少人们的失业率以及工资低的问 (免费)</h3></NavLink>
                             <div style={{ color: "rgb(161, 135, 113)" }}>职场中，你有没有遇到过老板用不公平地方式对待你。工作中，你并没有被得到认可。你有时候认为你的能力不如其他人。</div>
                             <h3 data-value="Q1.2/ 3$" onClick={(e) => add(e)}>Q2 运作条件是如何获得工作领导和同事认可的？ (3$)</h3>
                             <div>你希望自己和上司以及同事之间的相处模式是非常和谐的吗？心理学中的"运用条件"可以很好地展现出职场中关系和谐的一面。很多高情商的人都会利用这个方法。</div>
@@ -357,7 +344,7 @@ export function MainPage() {
                     <div>
                         <div style={{ textAlign: "right" }}>
                             <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "5%", color: "black" }}>
-                                <NavLink><h3 style={{ color: "rgb(161, 135, 113)" }}>Q1 如果孩子有拖延症，应该怎么样通过心理学中的加强来摆脱？ (免费)</h3></NavLink>
+                                <NavLink to={"/q2_1"}><h3 style={{ color: "rgb(161, 135, 113)" }}>Q1 如果孩子有拖延症，应该怎么样通过心理学中的加强来摆脱？ (免费)</h3></NavLink>
                             </div>
                             <div style={{ color: "rgb(161, 135, 113)" }}>孩子电视看得太入迷不愿意去写作业，不肯按时去洗澡上床怎么办？"加强"在对孩子教育当中起到了非常有用的作用。它会减少拖延行为。</div>
                             <div style={{ display: "flex", justifyContent: "flex-end", color: "black" }}>
@@ -526,6 +513,10 @@ export function MainPage() {
         }
     }
 
+    const finalPay = () => {
+
+    }
+
     return (
         <div id='MainPage'>
             <div id="snackbar"></div>
@@ -578,7 +569,7 @@ export function MainPage() {
                                 订单金额：<span>{money}$</span>
                             </div>
                             <div>
-                                支付方式：<div>Visa</div>
+                                支付方式：<div onClick={finalPay}>Visa</div>
                             </div>
                         </div>
                     </> : null
@@ -587,4 +578,17 @@ export function MainPage() {
             </div>
         </div>
     );
+}
+
+function showSnackbar(message, timeout) {
+    let tips = document.getElementById("snackbar");
+    tips.innerHTML = message;
+    if (timeout) {
+        clearTimeout(timeout);
+    }
+    tips.style.display = "block";
+    tips.className = "show";
+    timeout = setTimeout(() => {
+        tips.className = tips.className.replace("show", "disappear");
+    }, 2000);
 }
