@@ -1,8 +1,8 @@
 import React from 'react'; //import React Component
 import { Navigate, Route, Routes } from "react-router-dom";
 import { MainPage } from './page/MainPage.js';
-import { Signup } from './page/Signup.js';
-import { Login } from './page/Login.js';
+// import { Signup } from './page/Signup.js';
+// import { Login } from './page/Login.js';
 import { Q1_1 } from './page/Q1_1.js';
 import { Q1_2 } from './page/Q1_2.js';
 import { Q2_1 } from './page/Q2_1.js';
@@ -19,8 +19,8 @@ function App() {
         <Route path="/" element={<Navigate to="main" />} />
         <Route path="*" element={<Navigate to="error" />} />
         <Route path="main" element={<MainPage />} />
-        <Route path="signup" element={<Signup />} />
-        <Route path="login" element={<Login />} />
+        {/* <Route path="signup" element={<Signup />} /> */}
+        {/* <Route path="login" element={<Login />} /> */}
         <Route path="q1_1" element={<Q1_1 />} />
         <Route path="q1_2" element={<Q1_2 />} />
         <Route path="q2_1" element={<Q2_1 />} />

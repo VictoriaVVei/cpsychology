@@ -40,8 +40,9 @@ export function Signup() {
         topFunction()
     }
 
+    let href = window.location.href
     const actionCodeSettings = {
-        url: 'https://git.heroku.com/test-stripe.git/signup', //需要更改
+        url: href, //需要更改
         handleCodeInApp: true,
     };
 
