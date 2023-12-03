@@ -41,7 +41,7 @@ export function Signup() {
     }
 
     const actionCodeSettings = {
-        url: 'http://localhost:3000/signup', //需要更改
+        url: 'https://git.heroku.com/test-stripe.git/signup', //需要更改
         handleCodeInApp: true,
     };
 
