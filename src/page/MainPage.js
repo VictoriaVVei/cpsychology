@@ -286,6 +286,9 @@ export function MainPage() {
         content2 =
             <div className='reservation' id="p2">
                 <h1 style={{ marginBottom: "0" }}>Psychological space</h1>
+                <h3 style={{ margin: "0" }}>Buy two psychology articles and get a 10% discount, buy three psychology articles and get a 30% discount.</h3>
+                <h3 style={{ margin: "0" }}>The person who needs to solve a problem and comes to ask for help is called a visitor or counselor, and the counseling expert who provides help is called a counselor. </h3>
+                <h3 style={{ margin: "0" }}>Real cases show that hope can be helped. After purchasing three articles, you can contact  my mobile phone number "513 981 9216" or email "jingyichen448@gmail.com" to book a 30-minute free psychological communication.</h3>
                 <div style={{ fontSize: "small", color: "#6B7580" }}>Those who need to solve problems and seek help are called visitors or counselors, while consulting experts who provide help are called counselors.</div>
                 <div className='news_container'>
                     <div>
@@ -329,9 +332,9 @@ export function MainPage() {
         content2 =
             <div className='reservation' id="p2">
                 <h1 style={{ marginBottom: "0" }}>心理空间</h1>
+                <h3 style={{ margin: "0" }}>两篇优惠10%，三篇优惠30%。</h3>
+                <h3 style={{ margin: "0" }}>购买三篇文章后可以联系手机号“513 981 9216”或邮箱号“jingyichen448@gmail.com”预约30分钟免费心理沟通一次。</h3>
                 <div style={{ fontSize: "small", color: "#6B7580" }}>需要解决问题并前来寻求帮助者称为来访者或者咨客，提供帮助的咨询专家称为咨询者。真实案例展示希望可以从中得到帮助。</div>
-                <div style={{ fontSize: "small", color: "#6B7580" }}>两篇优惠10%，三篇优惠30%。</div>
-                <div style={{ fontSize: "small", color: "#6B7580" }}>购买三篇文章后可以联系手机号“513 981 9216”或邮箱号“jingyichen448@gmail.com”预约30分钟免费心理沟通一次。</div>
                 <div className='news_container'>
                     <div>
                         <img src="./img/p4.png" />
