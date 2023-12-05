@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 app.use(express.static(path.join(__dirname, 'build')));
-let paid = ["Q1.2"]
+let paid = [""]
 
 app.post('/firebase', async (req, res) => {
     const firebaseConfig = {
