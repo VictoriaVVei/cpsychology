@@ -3,25 +3,47 @@ dotenv.config();
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import Stripe from 'stripe';
 
 const app = express();
 app.use(express.json());
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 app.use(express.static(path.join(__dirname, 'build')));
+const stripe = new Stripe('sk_test_51OIj1iBjUDFctGveWr4Z0gsucwxFyzSHigd3Wlu84vrL1sCG3bKgiXGmMik9Ksj0jdlPgKcOCUiQEmFUwxZuRibq00bgtnK09D');
 let paid = [""]
 
-app.post('/firebase', async (req, res) => {
-    const firebaseConfig = {
-        apiKey: "AIzaSyBairZrtsMSDTSJ2yw7F377ltjrWcg08gs",
-        authDomain: "cypsych-c7908.firebaseapp.com",
-        projectId: "cypsych-c7908",
-        storageBucket: "cypsych-c7908.appspot.com",
-        messagingSenderId: "145659657421",
-        appId: "1:145659657421:web:2982f7359d33c49382bd84",
-        measurementId: "G-5XNTNE25BS"
-    };
+app.post('/create-checkout-session', async (req, res) => {
+    const amount = req.body.content;
 
-    res.json(firebaseConfig)
+    const session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        line_items: [{
+            price_data: {
+                currency: 'usd',
+                product_data: {
+                    name: '购物车结算',
+                },
+                unit_amount: amount * 100,
+            },
+            quantity: 1,
+        }],
+        mode: 'payment',
+        success_url: `http://localhost:3000/main?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: 'http://localhost:3000/main',
+    });
+    res.json({ id: session.id });
+});
+
+app.post('/payment_succeeded', async (req, res) => {
+    const cartItem = req.body.cartItem;
+    const session_id = req.body.session_id;
+
+    const session = await stripe.checkout.sessions.retrieve(session_id);
+    if (session.payment_status === 'paid') {
+        paid = paid.concat(cartItem);
+    } else {
+        res.json(false)
+    }
 });
 
 app.post('/checkBuy1', async (req, res) => {
@@ -38,7 +60,7 @@ app.post('/checkBuy1', async (req, res) => {
 app.post('/Q1_2', async (req, res) => {
     const body = req.body;
     let language = body.content
-
+    console.log(paid)
     let content = '';
     if (paid.includes("Q1.2")) {
         if (language === "English") {

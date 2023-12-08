@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'; //import React Compo
 import { NavLink } from 'react-router-dom';
 import { Navigation } from '../components/Navigation.js';
 import { Navigation2 } from '../components/Navigation2.js';
+import { loadStripe } from '@stripe/stripe-js';
 
 export function MainPage() {
     let timeout = null;
@@ -233,7 +234,6 @@ export function MainPage() {
             }
 
             const res = await response.json()
-            console.log(choice1 + " " + res)
             if (res === true) {
                 window.location.href = `/${choice2.replace(".", "_")}`
             } else {
@@ -517,9 +517,73 @@ export function MainPage() {
         }
     }
 
-    const finalPay = () => {
+    const stripePromise = loadStripe('pk_test_51OIj1iBjUDFctGvec66aYvzbZcta19lAYAVLCISKmHQbmu0JGS95kUVoIcQ6I9Vg0kypaYw4MUcroNSQ8R6jRYtV00vZbevLRl');
+    const finalPay = async () => {
+        let finalCartItem = []
+        cartItem.map((item) => {
+            finalCartItem.push(item.split("/ ")[0])
+        })
+        localStorage.setItem("cartItem", JSON.stringify(finalCartItem))
+        try {
+            const response = await fetch('/create-checkout-session', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ content: money }),
+            });
 
+            if (!response.ok) {
+                return
+            }
+
+            const session = await response.json();
+            const stripe = await stripePromise;
+
+            const { error } = await stripe.redirectToCheckout({
+                sessionId: session.id
+            });
+
+            if (error) {
+                console.log(error);
+                showSnackbar(language === "Chinese" ? "重定向错误" : "Redirection Error", timeout);
+            }
+        } catch (error) {
+            showSnackbar(language === "Chinese" ? "购买错误" : "Wrong Information", timeout)
+        }
     }
+
+    function checkPaymentStatus() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const session_id = urlParams.get('session_id');
+        let cartItem = localStorage.getItem("cartItem")
+        if (session_id) {
+            fetch('/payment_succeeded', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    cartItem: JSON.parse(cartItem),
+                    session_id: session_id
+                }),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (!data) {
+                        showSnackbar(language === "Chinese" ? "购买失败" : "Payment failed ", timeout)
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    }
+
+    window.onload = checkPaymentStatus;
 
     return (
         <div id='MainPage'>
