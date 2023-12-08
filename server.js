@@ -28,8 +28,8 @@ app.post('/create-checkout-session', async (req, res) => {
             quantity: 1,
         }],
         mode: 'payment',
-        success_url: `http://localhost:3000/main?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: 'http://localhost:3000/main',
+        success_url: `https://www.cammypsy.com/main?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: 'https://www.cammypsy.com/main',
     });
     res.json({ id: session.id });
 });
