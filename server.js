@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 app.use(express.static(path.join(__dirname, 'build')));
-const stripe = new Stripe('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');
+const stripe = new Stripe('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');
 
 app.post('/create-checkout-session', async (req, res) => {
     const amount = req.body.content;

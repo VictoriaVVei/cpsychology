@@ -558,6 +558,7 @@ export function MainPage() {
             }
         } catch (error) {
             showSnackbar(language === "Chinese" ? "购买错误" : "Wrong Information", timeout)
+            console.log(error)
         }
     }
 
