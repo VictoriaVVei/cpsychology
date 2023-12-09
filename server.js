@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
+import session from 'express-session';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import Stripe from 'stripe';
@@ -9,11 +10,17 @@ const app = express();
 app.use(express.json());
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 app.use(express.static(path.join(__dirname, 'build')));
-const stripe = new Stripe('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');
-let paid = [""]
+const stripe = new Stripe('sk_test_51OIj1iBjUDFctGveWr4Z0gsucwxFyzSHigd3Wlu84vrL1sCG3bKgiXGmMik9Ksj0jdlPgKcOCUiQEmFUwxZuRibq00bgtnK09D');
+app.use(session({
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: true,
+    // cookie: { secure: true }
+}));
 
 app.post('/create-checkout-session', async (req, res) => {
     const amount = req.body.content;
+    const cartItem = req.body.cartItem;
 
     const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
@@ -28,30 +35,29 @@ app.post('/create-checkout-session', async (req, res) => {
             quantity: 1,
         }],
         mode: 'payment',
-        success_url: `https://www.cammypsy.com/main?session_id={CHECKOUT_SESSION_ID}`,
+        success_url: `https://www.cammypsy.com/main?session_id={CHECKOUT_SESSION_ID}&buy=${cartItem}`,
         cancel_url: 'https://www.cammypsy.com/main',
     });
     res.json({ id: session.id });
 });
 
-app.post('/payment_succeeded', async (req, res) => {
-    const cartItem = req.body.cartItem;
-    const session_id = req.body.session_id;
-
-    const session = await stripe.checkout.sessions.retrieve(session_id);
-    if (session.payment_status === 'paid') {
-        paid = paid.concat(cartItem);
-    } else {
-        res.json(false)
-    }
-});
 
 app.post('/checkBuy1', async (req, res) => {
     const body = req.body;
     let choice = body.content
-
-    if (paid.includes(choice)) {
-        res.json(true)
+    const cartItem = req.body.cartItem;
+    const session_id = req.body.session_id;
+    if (session_id !== null & cartItem !== null) {
+        const session = await stripe.checkout.sessions.retrieve(session_id);
+        if (session.payment_status === 'paid') {
+            if (cartItem.includes(choice)) {
+                res.json(true)
+            } else {
+                res.json(false)
+            }
+        } else {
+            res.json(false)
+        }
     } else {
         res.json(false)
     }
@@ -60,9 +66,12 @@ app.post('/checkBuy1', async (req, res) => {
 app.post('/Q1_2', async (req, res) => {
     const body = req.body;
     let language = body.content
-    console.log(paid)
     let content = '';
-    if (paid.includes("Q1.2")) {
+    const cartItem = req.body.cartItem;
+    const session_id = req.body.session_id;
+    const session = await stripe.checkout.sessions.retrieve(session_id);
+    console.log(cartItem)
+    if (session.payment_status === 'paid' && cartItem.includes("Q1_2")) {
         if (language === "English") {
             content =
                 `
@@ -121,9 +130,12 @@ app.post('/Q1_2', async (req, res) => {
 app.post('/Q2_2', async (req, res) => {
     const body = req.body;
     let language = body.content
-
     let content = '';
-    if (paid.includes("Q2.2")) {
+    const cartItem = req.body.cartItem;
+    const session_id = req.body.session_id;
+    const session = await stripe.checkout.sessions.retrieve(session_id);
+    console.log(cartItem)
+    if (session.payment_status === 'paid' && cartItem.includes("Q2_2")) {
         if (language === "English") {
             content =
                 `
@@ -190,9 +202,12 @@ app.post('/Q2_2', async (req, res) => {
 app.post('/Q2_3', async (req, res) => {
     const body = req.body;
     let language = body.content
-
     let content = '';
-    if (paid.includes("Q2.3")) {
+    const cartItem = req.body.cartItem;
+    const session_id = req.body.session_id;
+    const session = await stripe.checkout.sessions.retrieve(session_id);
+    console.log(cartItem)
+    if (session.payment_status === 'paid' && cartItem.includes("Q2_3")) {
         if (language === "English") {
             content =
                 `
@@ -257,9 +272,12 @@ app.post('/Q2_3', async (req, res) => {
 app.post('/Q3_1', async (req, res) => {
     const body = req.body;
     let language = body.content
-
     let content = '';
-    if (paid.includes("Q3.1")) {
+    const cartItem = req.body.cartItem;
+    const session_id = req.body.session_id;
+    const session = await stripe.checkout.sessions.retrieve(session_id);
+    console.log(cartItem)
+    if (session.payment_status === 'paid' && cartItem.includes("Q3_1")) {
         if (language === "English") {
             content =
                 `
@@ -318,9 +336,12 @@ app.post('/Q3_1', async (req, res) => {
 app.post('/Q3_2', async (req, res) => {
     const body = req.body;
     let language = body.content
-
     let content = '';
-    if (paid.includes("Q3.2")) {
+    const cartItem = req.body.cartItem;
+    const session_id = req.body.session_id;
+    const session = await stripe.checkout.sessions.retrieve(session_id);
+    console.log(cartItem)
+    if (session.payment_status === 'paid' && cartItem.includes("Q3_2")) {
         if (language === "English") {
             content =
                 `

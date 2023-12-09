@@ -11,13 +11,16 @@ export function Q3_2() {
     const [htmlContent, setHtmlContent] = useState('');
     useEffect(() => {
         async function fetchData() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const session_id = urlParams.get('session_id');
+            const finalCartItem = urlParams.get('buy');
             try {
                 const response = await fetch('/Q3_2', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ content: language }),
+                    body: JSON.stringify({ content: language, session_id: session_id, cartItem: finalCartItem }),
                 });
 
                 if (!response.ok) {
