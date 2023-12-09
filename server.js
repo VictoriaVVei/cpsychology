@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
-import session from 'express-session';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import Stripe from 'stripe';
@@ -10,13 +9,7 @@ const app = express();
 app.use(express.json());
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 app.use(express.static(path.join(__dirname, 'build')));
-const stripe = new Stripe('sk_test_51OIj1iBjUDFctGveWr4Z0gsucwxFyzSHigd3Wlu84vrL1sCG3bKgiXGmMik9Ksj0jdlPgKcOCUiQEmFUwxZuRibq00bgtnK09D');
-app.use(session({
-    secret: 'your-secret-key',
-    resave: false,
-    saveUninitialized: true,
-    // cookie: { secure: true }
-}));
+const stripe = new Stripe('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');
 
 app.post('/create-checkout-session', async (req, res) => {
     const amount = req.body.content;

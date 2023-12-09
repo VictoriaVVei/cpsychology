@@ -525,7 +525,7 @@ export function MainPage() {
         }
     }
 
-    const stripePromise = loadStripe('pk_test_51OIj1iBjUDFctGvec66aYvzbZcta19lAYAVLCISKmHQbmu0JGS95kUVoIcQ6I9Vg0kypaYw4MUcroNSQ8R6jRYtV00vZbevLRl');
+    const stripePromise = loadStripe('pk_live_51OIj1iBjUDFctGveX5FzsPs3xeDqEUzOspWEr0RfWbc7y2i8QKCCL8IFA5TX6jHcGrQWWRyHVKE1W8KZ9bp2gCYQ00eIwpNpcy');
     const finalPay = async () => {
         let finalCartItem = []
         cartItem.map((item) => {
