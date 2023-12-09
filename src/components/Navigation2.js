@@ -50,12 +50,14 @@ export function Navigation2({ onLanguageChange }) {
                                 <a href="/main#p1"><div>Home</div></a>
                                 <a href="/main#p2"><div>Psychological space</div></a>
                                 <a href="/main#p3"><div>Personal case</div></a>
+                                <a href="/main#p4"><div>Privacy Policy</div></a>
                             </div>
                         </> :
                         <div>
                             <a href="/main#p1"><div>首页</div></a>
                             <a href="/main#p2"><div>心理空间</div></a>
                             <a href="/main#p3"><div>个人案例</div></a>
+                            <a href="/main#p4"><div>条款</div></a>
                         </div>
                     }
 

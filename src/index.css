@@ -237,6 +237,14 @@ main {
   height: 100%;
 }
 
+.policy {
+  width: 85%;
+  margin: auto;
+  height: 100%;
+  padding-bottom: 150px;
+  max-width: 1400px;
+}
+
 .slides {
   position: relative;
   display: grid;

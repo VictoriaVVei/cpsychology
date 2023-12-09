@@ -603,6 +603,114 @@ export function MainPage() {
 
                 <hr className="vertical-divider" />
                 {content3}
+
+                <hr className="vertical-divider" />
+                <div className='policy' id="p4">
+                    <h1 style={{ marginBottom: "0", textAlign: "center" }}>Privacy Policy</h1>
+                    <br />
+                    Protecting your private information is our priority. This Statement of Privacy applies to Psychology articles and half hour free psychology talk, and Cammy psychology website and governs data collection and usage. For the purposes of this Privacy Policy, unless otherwise noted, all references to Cammy psychology website include Www.cammypsy.com, Cammypsy and www.cammypsy.com. The Cammypsy application is a Buying psychology article and free half hour mental dialogue application. By using the Cammypsy application, you consent to the data practices described in this statement.
+                    <br />
+                    <br />
+                    <strong>Collection of your Personal Information</strong>
+                    <br />
+                    In order to better provide you with products and services offered, Cammypsy may collect personally identifiable information, such as your:
+                    <br />
+                    -	First and Last Name
+                    <br />
+                    -	E-mail
+                    <br />
+                    If you purchase Cammypsy's products and services, we collect billing and credit card information. This information is used to complete the purchase transaction.
+                    <br />
+                    Cammypsy may also collect anonymous demographic information, which is not unique to you, such as your:
+                    <br />
+                    -	Age
+                    <br />
+                    -	Gender
+                    <br />
+                    We do not collect any personal information about you unless you voluntarily provide it to us. However, you may be required to provide certain personal information to us when you elect to use certain products or services. These may include: (a) registering for an account; (b) entering a sweepstakes or contest sponsored by us or one of our partners; (c) signing up for special offers from selected third parties; (d) sending us an email message; (e) submitting your credit card or other payment information when ordering and purchasing products and services. To wit, we will use your information for, but not limited to, communicating with you in relation to services and/or products you have requested from us. We also may gather additional personal or non-personal information in the future.
+                    <br />
+                    <br />
+                    <strong>Use of your Personal Information</strong>
+                    <br />
+                    Cammypsy collects and uses your personal information to operate and deliver the services you have requested.
+                    <br />
+                    Cammypsy may also use your personally identifiable information to inform you of other products or services available from Cammypsy and its affiliates.
+                    <br />
+                    <br />
+                    <strong>Sharing Information with Third Parties</strong>
+                    <br />
+                    Cammypsy does not sell, rent or lease its customer lists to third parties.
+                    <br />
+                    Cammypsy may share data with trusted partners to help perform statistical analysis, send you email or postal mail, provide customer support, or arrange for deliveries. All such third parties are prohibited from using your personal information except to provide these services to Cammypsy, and they are required to maintain the confidentiality of your information.
+                    <br />
+                    Cammypsy may disclose your personal information, without notice, if required to do so by law or in the good faith belief that such action is necessary to: (a) conform to the edicts of the law or comply with legal process served on Cammypsy or the site; (b) protect and defend the rights or property of Cammypsy; and/or (c) act under exigent circumstances to protect the personal safety of users of Cammypsy, or the public.
+                    <br />
+                    <br />
+                    <strong>Right to Deletion</strong>
+                    <br />
+                    Subject to certain exceptions set out below, on receipt of a verifiable request from you, we will:
+                    <br />
+                    •	Delete your personal information from our records; and
+                    <br />
+                    •	Direct any service providers to delete your personal information from their records.
+                    <br />
+                    Please note that we may not be able to comply with requests to delete your personal information if it is necessary to:
+                    <br />
+                    •	Complete the transaction for which the personal information was collected, fulfill the terms of a written warranty or product recall conducted in accordance with federal law, provide a good or service requested by you, or reasonably anticipated within the context of our ongoing business relationship with you, or otherwise perform a contract between you and us;
+                    <br />
+                    •	Detect security incidents, protect against malicious, deceptive, fraudulent, or illegal activity; or prosecute those responsible for that activity;
+                    <br />
+                    •	Debug to identify and repair errors that impair existing intended functionality;
+                    <br />
+                    •	Exercise free speech, ensure the right of another consumer to exercise his or her right of free speech, or exercise another right provided for by law;
+                    <br />
+                    •	Comply with the California Electronic Communications Privacy Act;
+                    <br />
+                    •	Engage in public or peer-reviewed scientific, historical, or statistical research in the public interest that adheres to all other applicable ethics and privacy laws, when our deletion of the information is likely to render impossible or seriously impair the achievement of such research, provided we have obtained your informed consent;
+                    <br />
+                    •	Enable solely internal uses that are reasonably aligned with your expectations based on your relationship with us;
+                    <br />
+                    •	Comply with an existing legal obligation; or
+                    <br />
+                    •	Otherwise use your personal information, internally, in a lawful manner that is compatible with the context in which you provided the information.
+                    <br />
+                    <br />
+                    <strong>Children Under Thirteen</strong>
+                    <br />
+                    Cammypsy does not knowingly collect personally identifiable information from children under the age of thirteen. If you are under the age of thirteen, you must ask your parent or guardian for permission to use this application.
+                    <br />
+                    <br />
+                    <strong>E-mail Communications</strong>
+                    <br />
+                    From time to time, Cammypsy may contact you via email for the purpose of providing announcements, promotional offers, alerts, confirmations, surveys, and/or other general communication.
+                    <br />
+                    <br />
+                    <strong>External Data Storage Sites</strong>
+                    <br />
+                    We may store your data on servers provided by third party hosting vendors with whom we have contracted.
+                    <br />
+                    <br />
+                    <strong>Changes to this Statement</strong>
+                    <br />
+                    Cammypsy reserves the right to change this Privacy Policy from time to time. We will notify you about significant changes in the way we treat personal information by sending a notice to the primary email address specified in your account, by placing a prominent notice on our application, and/or by updating any privacy information. Your continued use of the application and/or Services available after such modifications will constitute your: (a) acknowledgment of the modified Privacy Policy; and (b) agreement to abide and be bound by that Policy.
+                    <br />
+                    <br />
+                    <strong>Contact Information</strong>
+                    <br />
+                    Cammypsy welcomes your questions or comments regarding this Statement of Privacy. If you believe that Cammypsy has not adhered to this Statement, please contact Cammypsy at:
+                    <br />
+                    Bothell, Washington 98011
+                    <br />
+                    Email Address:
+                    <br />
+                    Jingyichen448@gmail.com
+                    <br />
+                    Telephone number:
+                    <br />
+                    5139819216
+                    <br />
+                    Effective as of December 08, 2023
+                </div>
             </div>
             <div className="fixed-element">
                 {expandForm === true ?
