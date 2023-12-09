@@ -21,7 +21,7 @@ app.post('/create-checkout-session', async (req, res) => {
             price_data: {
                 currency: 'usd',
                 product_data: {
-                    name: '购物车结算',
+                    name: 'checkout',
                 },
                 unit_amount: amount * 100,
             },

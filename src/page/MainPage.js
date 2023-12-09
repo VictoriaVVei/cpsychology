@@ -511,11 +511,11 @@ export function MainPage() {
             total += parseInt(price)
         })
         if (cartItem.length >= 3) {
-            setMoney(total * 0.7)
+            setMoney((total * 0.7).toFixed(2))
         } else if (cartItem.length >= 2 && cartItem.length < 3) {
-            setMoney(total * 0.9)
+            setMoney((total * 0.9).toFixed(2))
         } else {
-            setMoney(total)
+            setMoney(total.toFixed(2))
         }
 
         if (ifPay) {
