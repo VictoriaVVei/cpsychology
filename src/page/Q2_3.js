@@ -3,7 +3,7 @@ import { Navigation } from '../components/Navigation.js';
 import { Navigation2 } from '../components/Navigation2.js';
 
 export function Q2_3() {
-    const [language, setLanguage] = useState('Chinese');
+    const [language, setLanguage] = useState('English');
     const handleLanguageChange = (language) => {
         setLanguage(language);
     };

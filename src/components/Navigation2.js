@@ -5,13 +5,13 @@ export function Navigation2({ onLanguageChange }) {
     let user = localStorage.getItem("user")
     const [language, setLanguage] = useState("Chinese");
     const changeL = () => {
-        const newLanguage = language === "Chinese" ? "English" : "Chinese";
+        const newLanguage = language === "English" ? "Chinese" : "English";
         setLanguage(newLanguage);
         if (onLanguageChange) {
             onLanguageChange(newLanguage);
         }
     }
-
+    
     const [isOpen, setIsOpen] = useState(false);
     const toggleMenu = () => {
         setIsOpen(!isOpen);

@@ -53,7 +53,7 @@ export function MainPage() {
         setPageN(n)
     }
 
-    const [language, setLanguage] = useState('Chinese');
+    const [language, setLanguage] = useState('English');
     const handleLanguageChange = (language) => {
         setLanguage(language);
     };
@@ -82,7 +82,7 @@ export function MainPage() {
                 </div>
                 <div style={{ gridRow: "1", gridColumn: "2", display: "flex", justifyContent: "flex-end", color: "rgb(161, 135, 113)" }}>Cammy</div>
                 <div style={{ gridRow: "2", gridColumn: "2" }}>
-                    <img src="./img/p1.png" style={{ width: "210%", gridRow: "2", gridColumn: "2" }} />
+                    <img src="./img/p1.jpg" style={{ width: "210%", gridRow: "2", gridColumn: "2" }} />
                     <div className='timeTag' style={{ fontSize: "small", color: "rgb(177, 177, 177)", position: "absolute", right: "0" }}>2023/05/ 21    14:21</div>
                 </div>
                 <div style={{ gridRow: "3", gridColumn: "2", }}></div>
@@ -160,7 +160,7 @@ export function MainPage() {
                 </div>
                 <div style={{ gridRow: "1", gridColumn: "2", display: "flex", justifyContent: "flex-end", color: "rgb(161, 135, 113)" }}>Cammy</div>
                 <div style={{ gridRow: "2", gridColumn: "2" }}>
-                    <img src="./img/p1.png" style={{ width: "210%", gridRow: "2", gridColumn: "2" }} />
+                    <img src="./img/p1.jpg" style={{ width: "210%", gridRow: "2", gridColumn: "2" }} />
                     <div className='timeTag' style={{ fontSize: "small", color: "rgb(177, 177, 177)", position: "absolute", right: "0" }}>2023/05/ 21    14:21</div>
                 </div>
                 <div style={{ gridRow: "3", gridColumn: "2", }}></div>
@@ -562,10 +562,19 @@ export function MainPage() {
         }
     }
 
+    useEffect(() => {
+        if (window.innerWidth < 800) {
+            let div = document.querySelector(".vertical-divider")
+            let div2 = document.querySelector(".slides p")
+            div.style.marginTop = `${div2.clientHeight - 300}px`
+        }
+    },[])
+
     return (
         <div id='MainPage'>
             <div id="snackbar"></div>
             <div className="scale-container">
+                <div className='tips'>Hi, dear user, if you want to switch from Chinese to English, please click the top right corner</div>
                 <Navigation onLanguageChange={handleLanguageChange} />
                 <Navigation2 onLanguageChange={handleLanguageChange} />
                 <div className='welcomeBoard' onMouseOver={showB} onMouseLeave={closeB} id="p1">

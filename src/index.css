@@ -279,7 +279,7 @@ main {
 }
 
 .slides p {
-  height: 600px;
+  height: fit-content;
   margin: 0;
   padding: 30px 300px 40px 50px;
   margin-right: 18%;
@@ -546,6 +546,15 @@ main {
   margin-top: -80px;
 }
 
+.tips{
+  position: absolute;
+  width: 20%;
+  max-width: 100px;
+  z-index: 2;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 /* ------ */
 /* Signin */
 /* ------ */
@@ -782,7 +791,7 @@ input {
 
   .slides p {
     padding: 30px 150px 40px 50px;
-    height: 650px;
+    /* height: 650px; */
   }
 
   .slides img {
@@ -823,6 +832,7 @@ input {
   #Navigation2 {
     opacity: 1;
     visibility: visible;
+    grid-template-columns: 10% 70% 20%;
   }
 
   .cart {

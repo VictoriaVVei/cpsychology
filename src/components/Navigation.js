@@ -3,9 +3,9 @@ import { NavLink } from "react-router-dom";
 
 export function Navigation({ onLanguageChange }) {
     let user = localStorage.getItem("user")
-    const [language, setLanguage] = useState("Chinese");
+    const [language, setLanguage] = useState("English");
     const changeL = () => {
-        const newLanguage = language === "Chinese" ? "English" : "Chinese";
+        const newLanguage = language === "English" ? "Chinese" : "English";
         setLanguage(newLanguage);
         if (onLanguageChange) {
             onLanguageChange(newLanguage);
@@ -36,7 +36,7 @@ export function Navigation({ onLanguageChange }) {
 
             {language === "English" ?
                 <>
-                    <div className="menu">
+                    <div className="menu" style={{paddingTop:"0"}}>
                         <a href="/main#p1"><div>Home</div></a>
                         <a href="/main#p2"><div>Psychological space</div></a>
                         <a href="/main#p3"><div>Personal case</div></a>
